@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ns="urn:beans.junit.lanwen.ru"
+           targetNamespace="urn:beans.junit.lanwen.ru">
+
+    <xs:element name="serverError" type="ns:ServerError"/>
+    <xs:complexType name="ServerError">
+        <xs:sequence>
+            <xs:element name="status" type="xs:int"/>
+            <xs:element name="message" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

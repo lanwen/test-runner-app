@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ns="urn:entity.junit.lanwen.ru"
+           targetNamespace="urn:entity.junit.lanwen.ru"
+           elementFormDefault="unqualified"
+           attributeFormDefault="unqualified">
+
+    <xs:element name="user" type="ns:User"/>
+    <xs:complexType name="User">
+        <xs:sequence>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="firstName" type="xs:string"/>
+            <xs:element name="lastName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
