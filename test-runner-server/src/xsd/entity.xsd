@@ -5,13 +5,28 @@
            elementFormDefault="unqualified"
            attributeFormDefault="unqualified">
 
-    <xs:element name="user" type="ns:User"/>
-    <xs:complexType name="User">
+    <xs:element name="testcase" type="ns:Testcase"/>
+    <xs:complexType name="Testcase">
         <xs:sequence>
-            <xs:element name="username" type="xs:string"/>
-            <xs:element name="firstName" type="xs:string"/>
-            <xs:element name="lastName" type="xs:string"/>
+            <xs:element name="classname" type="xs:string"/>
+            <xs:element name="methodname" type="xs:string"/>
+            <xs:element name="state" type="ns:TestcaseState" default="UNKNOWN"/>
         </xs:sequence>
     </xs:complexType>
 
+    <xs:simpleType name="TestcaseState">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="UNKNOWN"/>
+            <xs:enumeration value="STARTED"/>
+            <xs:enumeration value="FINISHED"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="TestcaseStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="passed"/>
+            <xs:enumeration value="failed"/>
+            <xs:enumeration value="skipped"/>
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>

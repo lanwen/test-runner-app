@@ -7,5 +7,5 @@
             http://www.mockito.org/spring/mockito
             http://www.mockito.org/spring/mockito.xsd">
 
-    <mockito:mock id="testUserService" class="ru.lanwen.junit.service.UserService"/>
+    <mockito:mock id="testUserService" class="ru.lanwen.junit.service.BroadcastService"/>
 </beans>

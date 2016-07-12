@@ -3,7 +3,6 @@ package ru.lanwen.junit.resource;
 import org.apache.camel.test.spring.CamelSpringJUnit4ClassRunner;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.DeploymentContext;
 import org.glassfish.jersey.test.JerseyTest;
@@ -20,7 +19,7 @@ import static org.springframework.util.ReflectionUtils.doWithFields;
 import static org.springframework.util.ReflectionUtils.makeAccessible;
 
 @RunWith(CamelSpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:test-service-context.xml"})
+@ContextConfiguration(locations = {"classpath:META-INF/spring/application-context.xml", "classpath:test-service-context.xml"})
 public abstract class BasicResourceTest extends JerseyTest {
 
     public BasicResourceTest() {
@@ -61,6 +60,5 @@ public abstract class BasicResourceTest extends JerseyTest {
 
     protected void configureClient(ClientConfig config) {
         config.register(JacksonFeature.class);
-        config.register(MultiPartFeature.class);
     }
 }

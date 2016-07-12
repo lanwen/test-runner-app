@@ -10,8 +10,6 @@
             http://camel.apache.org/schema/spring 
             http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-    <context:component-scan base-package="ru.lanwen.junit"/>
-
     <bean id="configurationProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="ignoreResourceNotFound" value="true"/>
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
@@ -22,8 +20,4 @@
             </list>
         </property>
     </bean>
-
-    <camel:camelContext id="camel">
-        <camel:contextScan/>
-    </camel:camelContext>
 </beans>
