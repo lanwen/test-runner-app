@@ -1,18 +1,20 @@
 package ru.lanwen.junit.camel.routes;
 
+import org.apache.camel.Endpoint;
+import org.apache.camel.EndpointInject;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.spi.AggregationRepository;
+import org.apache.camel.util.toolbox.AggregationStrategies;
 import org.springframework.stereotype.Component;
-import ru.lanwen.junit.entity.Testcase;
+import ru.lanwen.junit.camel.beans.TestcaseFinishedPredicate;
+import ru.lanwen.junit.camel.beans.UntilFinishedAggregation;
+import ru.lanwen.junit.service.FinishedRepository;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.concurrent.TimeUnit;
 
-import static java.lang.String.format;
 import static org.apache.camel.LoggingLevel.DEBUG;
-import static org.apache.camel.util.toolbox.AggregationStrategies.useLatest;
-import static ru.lanwen.junit.resource.TestStateResource.STATUS;
+import static org.apache.camel.builder.PredicateBuilder.not;
 
 /**
  * @author lanwen (Merkushev Kirill)
@@ -20,36 +22,54 @@ import static ru.lanwen.junit.resource.TestStateResource.STATUS;
 @Component
 public class TestStateRoute extends RouteBuilder {
 
+    @EndpointInject(uri = "seda:in")
+    private Endpoint in;
+
+    @EndpointInject(uri = "seda:started")
+    private Endpoint started;
+
+    @EndpointInject(uri = "seda:finished")
+    private Endpoint finished;
+
+    @EndpointInject(uri = "direct:aggregation")
+    private Endpoint aggregation;
+
+
     @Inject
-    @Named("started")
-    private AggregationRepository started;
+    private AggregationRepository startedR;
+
+    @Inject
+    private FinishedRepository finishedR;
 
     @Override
     public void configure() throws Exception {
-        from("seda:in")
+        from(in)
                 .routeId("incoming")
-                .process(exchange -> {
-                    Testcase msg = exchange.getIn().getBody(Testcase.class);
-                    exchange.getIn().setHeader("id", format("%s#%s", msg.getClassname(), msg.getMethodname()));
-                })
+                .setHeader("id", simple("${body.classname}#${body.methodname}"))
                 .log(DEBUG, "Incoming testcase ${header.id}!")
                 .choice()
-                .when(header(STATUS).isNull()).to("seda:started")
-                .end()
-                .aggregate(header("id"), useLatest())
-                .completionPredicate(header(STATUS).isNotNull())
-                .aggregationRepository(started)
+                .when(not(method(TestcaseFinishedPredicate.class)))
+                .multicast().to(aggregation, started).parallelProcessing().end()
+                .endChoice().otherwise().to(aggregation).end();
+
+        from(aggregation)
+                .routeId("aggregation")
+                .aggregate(header("id"), AggregationStrategies.bean(UntilFinishedAggregation.class))
+                .completionPredicate(method(TestcaseFinishedPredicate.class))
+                .aggregationRepository(startedR)
                 .completionTimeout(TimeUnit.MINUTES.toMillis(5))
-                .to("seda:finished");
-        
-        from("seda:started").routeId("started")
+                .to(finished);
+
+        from(started)
+                .routeId("started")
                 .log("Started new testcase ${header.id}!")
                 .bean("broadcaster")
                 .stop();
 
-        from("seda:finished")
+        from(finished)
                 .routeId("finished")
-                .log("Finished with status [${header.status}] ${header.id}!")
+                .log("Finished with status [${body.status}] ${header.id}!")
+                .bean(finishedR)
                 .bean("broadcaster")
                 .stop();
     }

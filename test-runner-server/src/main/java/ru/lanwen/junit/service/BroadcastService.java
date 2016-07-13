@@ -25,7 +25,7 @@ public class BroadcastService {
 
     @Handler
     public void broadcast(Testcase message) {
-        LoggerFactory.getLogger(getClass()).info("Message broadcasted {}", message.getClassname());
+        LoggerFactory.getLogger(getClass()).info("Message broadcasted {}", message);
         
         sessions.forEach(session -> {
             try {

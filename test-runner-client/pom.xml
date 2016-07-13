@@ -53,11 +53,11 @@
                 <configuration>
                     <generationStyle>jaxrs20</generationStyle>
                     <targets>
-                        <url>http://localhost:8080/application.wadl?detailed=true</url>
+                        <url>http://localhost:8080/api/application.wadl?detailed=true</url>
                     </targets>
                     <customClassNames>
                         <property>
-                            <name>http://localhost:8080/</name>
+                            <name>http://localhost:8080/api</name>
                             <value>TestRunnerClientGenerated</value>
                         </property>
                     </customClassNames>
