@@ -21,7 +21,7 @@ public class UntilFinishedAggregation {
     private Failure truncatedFailure(Failure failure) {
         return Optional.ofNullable(failure)
                 .map(toTruncate -> toTruncate.withStackTrace(
-                        String.format("%.100s", failure.getStackTrace())
+                        String.format("%.100s", toTruncate.getStackTrace())
                 ))
                 .orElse(null);
     }

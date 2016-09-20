@@ -155,26 +155,26 @@
                 <artifactId>maven-jaxb2-plugin</artifactId>
             </plugin>
 
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>${jetty.version}</version>
-                <executions>
-                    <execution>
-                        <id>start-jetty</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>run-forked</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${not.for.its}</skip>
-                            <waitForChild>false</waitForChild>
-                            <maxStartupLines>200</maxStartupLines>
-                            <jvmArgs>${surefireArgLine} -Djetty.port=${jetty.port}</jvmArgs>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.eclipse.jetty</groupId>-->
+                <!--<artifactId>jetty-maven-plugin</artifactId>-->
+                <!--<version>${jetty.version}</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>start-jetty</id>-->
+                        <!--<phase>compile</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>run-forked</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<skip>${not.for.its}</skip>-->
+                            <!--<waitForChild>false</waitForChild>-->
+                            <!--<maxStartupLines>200</maxStartupLines>-->
+                            <!--<jvmArgs>${surefireArgLine} -Djetty.port=${jetty.port}</jvmArgs>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 </project>

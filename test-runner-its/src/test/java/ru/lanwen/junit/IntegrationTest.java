@@ -2,10 +2,9 @@ package ru.lanwen.junit;
 
 import org.junit.Test;
 import ru.lanwen.junit.client.TestRunnerClientGenerated;
-import ru.lanwen.junit.entity.User;
+import ru.lanwen.junit.entity.Testcase;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -21,7 +20,6 @@ public class IntegrationTest {
 
     @Test
     public void shouldHandleUser() throws Exception {
-        User user = TestRunnerClientGenerated.user().getAsUser();
-        assertThat(user.getFirstName(), nullValue());
+        TestRunnerClientGenerated.test().state().postJson(new Testcase()).close();
     }
 }
